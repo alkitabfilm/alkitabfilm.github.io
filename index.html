@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- mobile metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo&display=swap" rel="stylesheet">
+  <title>Alkitab Film</title>
+  <style>
+    body {
+      font-family: 'Exo', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+}
+
+.navbar {
+  background-color: #f5f5f5;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar li {
+  margin-left: 10px;
+}
+
+.navbar li a {
+  color: #333;
+  text-decoration: none;
+  padding: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar li a:hover {
+  background-color: #ddd;
+}
+
+.container {
+  max-width: 1320px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .button-container .btn {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+.video-container {
+  display: none;
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-description {
+  margin-top: 10px;
+}
+
+.btn-next {
+  display: none;
+  margin-top: 10px;
+}
+
+.navbar-left {
+  background-color: #333;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.navbar-left h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.navbar-left ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.navbar-left li {
+  margin-bottom: 5px;
+  border: 1px dashed #333;
+  padding: 8px;
+}
+
+.navbar-left li a {
+  text-decoration: none;
+  color: #fff;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-left li a:hover {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+/* Gaya tombol ketika ditekan */
+.navbar-left a:active {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+/* Gaya tombol yang dipilih */
+.navbar-left a.selected {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+/* Responsif untuk perangkat mobile */
+@media only screen and (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+  }
+
+  .navbar li {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  .navbar li a {
+    padding: 8px;
+  }
+
+  .navbar-left {
+    align-items: flex-start;
+  }
+
+  .navbar-left h1 {
+    margin-bottom: 10px;
+  }
+
+  .navbar-left ul {
+    flex-direction: row;
+  }
+
+  .navbar-left li {
+    margin-bottom: 0;
+    margin-left: 10px;
+  }
+
+  .video-container {
+    padding-bottom: 0;
+    height: auto;
+  }
+}
+
+
+  </style>
+  <script>
+    function showVideo(videoId) {
+    var videos = document.getElementsByClassName('video-container');
+    for (var i = 0; i < videos.length; i++) {
+      videos[i].style.display = 'none';
+    }
+    var currentVideo = document.getElementById(videoId);
+    currentVideo.style.display = 'block';
+
+    var navbarLinks = document.querySelectorAll('.navbar li a');
+    for (var i = 0; i < navbarLinks.length; i++) {
+      navbarLinks[i].classList.remove('active');
+    }
+
+    var currentLink = document.getElementById('link-' + videoId);
+    currentLink.classList.add('active');
+
+    // Tambahkan kode CSS untuk efek tombol yang di tekan dan tombol yang dipilih di sini
+    var activeButtons = document.querySelectorAll('.navbar li a.active');
+    for (var i = 0; i < activeButtons.length; i++) {
+      activeButtons[i].classList.remove('active');
+    }
+
+    currentLink.classList.add('active');
+  }
+
+    function showNextVideo() {
+      var currentVideo = document.querySelector('.video-container:not([style*="display: none"])');
+      var nextVideo = currentVideo.nextElementSibling;
+      if (nextVideo) {
+        currentVideo.style.display = 'none';
+        nextVideo.style.display = 'block';
+      }
+
+      var videos = document.getElementsByClassName('video-container');
+      var btnNext = document.getElementById('btn-next');
+      if (nextVideo === videos[videos.length - 1]) {
+        btnNext.style.display = 'none';
+      }
+    }
+
+    function showPrevVideo() {
+      var currentVideo = document.querySelector('.video-container[style*="display: block"]');
+      var prevVideo = currentVideo.previousElementSibling;
+      if (prevVideo) {
+        currentVideo.style.display = 'none';
+        prevVideo.style.display = 'block';
+      }
+
+      var btnNext = document.getElementById('btn-next');
+      if (prevVideo === null) {
+        btnNext.style.display = 'block';
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="navbar-left">
+    <img src="logo/logo AF.png" alt="Logo Alkitab Film" width="50" height="50">
+    <h1>Alkitab Film</h1>
+    <ul>
+      <li><a href="#" onclick="showVideo('video1')" id="link-video1">| Penulis Injil Markus |</a></li>
+      <li><a href="#" onclick="showVideo('video2')" id="link-video2">Biografi - Santo Hieronimus |</a></li>
+      <li><a href="#" onclick="showVideo('video3')" id="link-video3">Biografi - Yohanes Pembabtis |</a></li>
+      <li><a href="#" onclick="showVideo('video4')" id="link-video4">Septuginta |</a></li>
+    </ul>
+    <ul>
+      <li><a href="#" onclick="showVideo('video5')" id="link-video5">Gereja Apostolik |</a></li>
+      <li><a href="#" onclick="showVideo('video6')" id="link-video6">Uskup Tesalonika |</a></li>
+      <li><a href="#" onclick="showVideo('video7')" id="link-video7">Santo Yohanes Krisostomus |</a></li>
+      <li><a href="#" onclick="showVideo('video8')" id="link-video8">ANIMASI TUHAN YESUS ( YESUS PENOLONG KU ) |</a></li>
+    </ul>
+  </div>
+  
+  
+  
+
+<div class="container">
+    <div id="video1" class="video-container" style="display: block;">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/UibBAtQKK-k?t=10s" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Deskripsi Video 1</h2>
+        <p>Ini adalah deskripsi dari Video 1.</p>
+      </div>
+    </div>
+    <div id="video2" class="video-container">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/NpZRNWuvxwg" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Deskripsi Video 2</h2>
+        <p>Ini adalah deskripsi dari Video 2.</p>
+      </div>
+    </div>
+    <div id="video3" class="video-container">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/E3AtUWOLbfs" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Deskripsi Video 3</h2>
+        <p>Ini adalah deskripsi dari Video 3.</p>
+      </div>
+    </div>
+    <div id="video4" class="video-container">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/GqVmgDK4BLk" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Video 4</h2>
+        <p>Ini adalah deskripsi dari Video 4.</p>
+      </div>
+    </div>
+    <div id="video5" class="video-container">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/vmBkzRG44kk" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Video 5</h2>
+        <p>Ini adalah deskripsi dari Video 5.</p>
+      </div>
+    </div>    
+    <div id="video6" class="video-container">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/IDtYowkDDdM" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Video 6</h2>
+        <p>Ini adalah deskripsi dari Video 6.</p>
+      </div>
+    </div>
+    <div id="video7" class="video-container">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/AlGtD-x2Iwo?t=7s" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Video 7</h2>
+        <p>Ini adalah deskripsi dari Video 7.</p>
+      </div>
+    </div>
+    <div id="video8" class="video-container">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/uOdeHxyaOVU" frameborder="0" allowfullscreen></iframe>
+      <div class="video-description">
+        <h2>Video 8</h2>
+        <p>Ini adalah deskripsi dari Video 8.</p>
+      </div>
+    </div>              
+    <div class="button-container">
+      <button id="btn-prev" class="btn btn-primary" onclick="showPrevVideo()"><i class="fas fa-arrow-alt-circle-left"></i> Kembali</button>
+      <button id="btn-next" class="btn btn-primary" onclick="showNextVideo()">Selanjutnya <i class="fas fa-arrow-alt-circle-right"></i></button>
+    </div>
+  
+    <!-- Your JavaScript code here -->
+  
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+  </div>
+
+  <script>
+    var videos = document.getElementsByClassName('video-container');
+    if (videos.length > 1) {
+      document.getElementById('btn-next').style.display = 'block';
+    }
+  </script>
+</body>
+
+</html>
